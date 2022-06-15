@@ -5,6 +5,8 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Text.Encodings.Web;
+using System.Text.Unicode;
 
 namespace AppHealth.ForWorkWithFiles
 {
@@ -36,6 +38,12 @@ namespace AppHealth.ForWorkWithFiles
 
         public void LoadInFile(ResultUser resultUser, UserInfo userInfo)
         {
+            JsonSerializerOptions jsonSerializerOptions = new JsonSerializerOptions()
+            {
+                Encoder = JavaScriptEncoder.Create(UnicodeRanges.BasicLatin, UnicodeRanges.Cyrillic),
+                WriteIndented = true
+            };
+
             using (FileStream fs = new FileStream(string.Format(@"{0}\SaveJson\user.json", Environment.CurrentDirectory), FileMode.OpenOrCreate))
             {
                 var user = new { 
@@ -45,7 +53,7 @@ namespace AppHealth.ForWorkWithFiles
                     WorstResult = resultUser.WorstResult,
                     Rank = userInfo.Rank,
                     Status=userInfo.Status};
-                JsonSerializer.Serialize(fs, user);
+                JsonSerializer.Serialize(fs, user, jsonSerializerOptions);
             }
         }
     }

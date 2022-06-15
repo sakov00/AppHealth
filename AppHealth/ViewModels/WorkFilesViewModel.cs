@@ -112,6 +112,43 @@ namespace AppHealth.ViewModels
 
         #endregion --- LoadFromJsonFile ---
 
+        #region --- LoadInXmlFile ---
+        public ICommand LoadInXmlFile
+        {
+            get
+            {
+                if (_cmdLoadInXmlFile == null)
+                {
+                    _cmdLoadInXmlFile = new RelayCommand(
+                        param => LoadInFile(param, AutofacConfig.GetContainer.Resolve<WorkForXml>())
+                        );
+                }
+                return _cmdLoadInXmlFile;
+            }
+        }
+        private RelayCommand _cmdLoadInXmlFile;
+
+        #endregion --- LoadInExcelFile ---
+
+        #region --- LoadFromXmlFile ---
+
+        public ICommand LoadFromXmlFile
+        {
+            get
+            {
+                if (_cmdLoadFromXmlFile == null)
+                {
+                    _cmdLoadFromXmlFile = new RelayCommand(
+                        param => LoadFromFile(param, AutofacConfig.GetContainer.Resolve<WorkForXml>())
+                        );
+                }
+                return _cmdLoadFromXmlFile;
+            }
+        }
+        private RelayCommand _cmdLoadFromXmlFile;
+
+        #endregion --- LoadFromXmlFile ---
+
         #endregion Commands
     }
 }

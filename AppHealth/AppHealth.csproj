@@ -16,6 +16,7 @@
     <Deterministic>true</Deterministic>
     <NuGetPackageImportStamp>
     </NuGetPackageImportStamp>
+    <TargetFrameworkProfile />
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <PlatformTarget>AnyCPU</PlatformTarget>
@@ -106,6 +107,7 @@
     <Compile Include="Containers\AutofacConfig.cs" />
     <Compile Include="Converters\NumericComparisonToBoolConverter.cs" />
     <Compile Include="ForWorkWithFiles\WorkForJson.cs" />
+    <Compile Include="ForWorkWithFiles\WorkForXml.cs" />
     <Compile Include="Interfaces\IForWorkWithFiles.cs" />
     <Compile Include="Models\ResultUser.cs" />
     <Compile Include="Models\UserInfo.cs" />

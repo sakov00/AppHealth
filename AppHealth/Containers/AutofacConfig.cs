@@ -14,6 +14,7 @@ namespace CreateGraphByPoints.Containers
             builder.RegisterType<DrawFuncViewModel>().AsSelf();
             builder.RegisterType<WorkFilesViewModel>().AsSelf();
             builder.RegisterType<WorkForJson>().AsSelf();
+            builder.RegisterType<WorkForXml>().AsSelf();
             builder.Register(x => new MainViewModel(x.Resolve<DrawFuncViewModel>(), x.Resolve<WorkFilesViewModel>()));
 
             GetContainer = builder.Build();

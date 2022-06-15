@@ -113,10 +113,16 @@
                 <MenuItem Header="Save in Json" 
                           Command="{Binding WorkFilesVM.LoadInJsonFile}"
                           CommandParameter="{Binding DrawFuncVM}"/>
+                <MenuItem Header="Save in Xml" 
+                          Command="{Binding WorkFilesVM.LoadInXmlFile}" 
+                          CommandParameter="{Binding DrawFuncVM}"/>
             </MenuItem>
             <MenuItem Header="Load from file">
                 <MenuItem Header="Load from Json" 
                           Command="{Binding WorkFilesVM.LoadFromJsonFile}"
+                          CommandParameter="{Binding DrawFuncVM}"/>
+                <MenuItem Header="Load from Xml" 
+                          Command="{Binding WorkFilesVM.LoadFromXmlFile}"
                           CommandParameter="{Binding DrawFuncVM}"/>
             </MenuItem>
         </Menu>
