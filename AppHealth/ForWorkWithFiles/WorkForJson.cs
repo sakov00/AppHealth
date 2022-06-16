@@ -34,7 +34,6 @@ namespace AppHealth.ForWorkWithFiles
                     param.Add(person);
                 }
             });
-            param.ForEach(x => x.OrderBy(y => y.User));
         }
 
         public async Task LoadInFile(ResultUser resultUser, UserInfo userInfo)
