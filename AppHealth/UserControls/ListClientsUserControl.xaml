@@ -1,0 +1,57 @@
+﻿<UserControl x:Class="AppHealth.UserControls.ListClientsUserControl"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:behaviors="clr-namespace:Microsoft.Xaml.Behaviors;assembly=Microsoft.Xaml.Behaviors"
+             xmlns:converters="clr-namespace:AppHealth.Converters"
+             mc:Ignorable="d" 
+             d:DesignHeight="450" d:DesignWidth="800">
+    <UserControl.Resources>
+        <ResourceDictionary>
+            <converters:NumericComparisonToColorConverter x:Key="NumericComparisonToColorConverter"/>
+        </ResourceDictionary>
+    </UserControl.Resources>
+    <Grid>
+        <ListView ItemsSource="{Binding DrawFuncVM.ListResultUser, UpdateSourceTrigger=PropertyChanged}"
+                SelectedItem="{Binding SelectedIndex}"
+                Name="ListView1"
+                Margin="10,30,10,10"
+                HorizontalContentAlignment="Stretch"
+                Foreground="Black">
+            <ListView.View>
+                <GridView x:Name="ElementListView">
+                    <GridView.Columns>
+                        <GridViewColumn Header="User"
+                                DisplayMemberBinding="{Binding User}"/>
+                        <GridViewColumn Header="Average Steps"
+                                DisplayMemberBinding="{Binding AverageSteps}"/>
+                        <GridViewColumn Header="Best Result"
+                                DisplayMemberBinding="{Binding BestResult}"/>
+                        <GridViewColumn Header="Worst Result"
+                                DisplayMemberBinding="{Binding WorstResult}"/>
+                    </GridView.Columns>
+                </GridView>
+            </ListView.View>
+            <ListView.ItemContainerStyle>
+                <Style TargetType="ListViewItem">
+                    <Setter Property="Background">
+                        <Setter.Value>
+                            <MultiBinding Converter="{StaticResource NumericComparisonToColorConverter }" ConverterParameter="1.2">
+                                <Binding Path="AverageSteps"/>
+                                <Binding Path="BestResult"/>
+                            </MultiBinding>
+                        </Setter.Value>
+                    </Setter>
+                </Style>
+            </ListView.ItemContainerStyle>
+            <behaviors:Interaction.Triggers>
+                <behaviors:EventTrigger EventName="SelectionChanged">
+                    <behaviors:InvokeCommandAction 
+                                  Command="{Binding DrawFuncVM.SelectResultUser}"
+                                  CommandParameter="{Binding ElementName=ListView1, Path=SelectedItem}"/>
+                </behaviors:EventTrigger>
+            </behaviors:Interaction.Triggers>
+        </ListView>
+    </Grid>
+</UserControl>

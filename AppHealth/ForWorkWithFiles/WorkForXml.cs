@@ -2,6 +2,7 @@
 using CreateGraphByPoints.Interfaces;
 using System;
 using System.Collections.Generic;
+using System.Threading.Tasks;
 using System.Xml;
 
 namespace AppHealth.ForWorkWithFiles
@@ -13,7 +14,7 @@ namespace AppHealth.ForWorkWithFiles
             throw new NotImplementedException();
         }
 
-        public void LoadInFile(ResultUser resultUser, UserInfo userInfo)
+        public async Task LoadInFile(ResultUser resultUser, UserInfo userInfo)
         {
             XmlWriterSettings xmlWriterSettings = new XmlWriterSettings()
             {
@@ -31,12 +32,8 @@ namespace AppHealth.ForWorkWithFiles
                 writer.WriteElementString("BestResult", resultUser.BestResult.ToString());
                 writer.WriteElementString("WorstResult", resultUser.WorstResult.ToString());
                 writer.WriteEndElement();
-                writer.Flush();
+                await Task.Run(() => writer.Flush());
             }
-            //using (FileStream fs = new FileStream(string.Format(@"{0}\PointsFunc.xml", Environment.CurrentDirectory), FileMode.OpenOrCreate))
-            //{
-            //    xmlSerializer.Serialize(fs, param);
-            //}
         }
     }
 }

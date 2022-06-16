@@ -6,6 +6,7 @@ using CreateGraphByPoints.Containers;
 using CreateGraphByPoints.Interfaces;
 using System;
 using System.Linq;
+using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Input;
 using System.Windows.Threading;
@@ -14,7 +15,7 @@ namespace AppHealth.ViewModels
 {
     public class WorkFilesViewModel : BaseViewModel
     {
-        private void LoadInFile(object param, IForWorkWithFiles WorkFile)
+        private async Task LoadInFile(object param, IForWorkWithFiles WorkFile)
         {
             var DrawFuncVM = param as DrawFuncViewModel;
             if (DrawFuncVM.CurrentResultUser == null)
@@ -24,7 +25,8 @@ namespace AppHealth.ViewModels
             }    
             var userInfo = DrawFuncVM.ListUserInfo.Last().FirstOrDefault(x => x.User == DrawFuncVM.CurrentResultUser.User);
 
-            WorkFile.LoadInFile(DrawFuncVM.CurrentResultUser, userInfo);
+            await WorkFile.LoadInFile(DrawFuncVM.CurrentResultUser, userInfo);
+            MessageBox.Show("The users were successfully loaded in the file.");
         }
 
         private void LoadFromFile(object param, IForWorkWithFiles WorkFile)
@@ -58,7 +60,7 @@ namespace AppHealth.ViewModels
                         if (UserInfo.Steps > resultUser.BestResult)
                             resultUser.BestResult = UserInfo.Steps;
 
-                        if (UserInfo.Steps < resultUser.WorstResult)
+                        if (UserInfo.Steps < resultUser.WorstResult && UserInfo.Steps != 0)
                             resultUser.WorstResult = UserInfo.Steps;
                     }
                 });
@@ -68,8 +70,7 @@ namespace AppHealth.ViewModels
             {
                 resultUser.AverageSteps = resultUser.AverageSteps / DrawFuncVM.ListUserInfo.Count;
             }
-            MessageBox.Show("The functions were successfully unloaded from the file." +
-                "\nThe points of the blue function are now displayed");
+            MessageBox.Show("The users were successfully unloaded from the file.");
         }
 
         #region Commands
@@ -83,7 +84,7 @@ namespace AppHealth.ViewModels
                 if (_cmdLoadInJsonFile == null)
                 {
                     _cmdLoadInJsonFile = new RelayCommand(
-                        param => LoadInFile(param, AutofacConfig.GetContainer.Resolve<WorkForJson>())
+                        async param => await Task.Run(()=> LoadInFile(param, AutofacConfig.GetContainer.Resolve<WorkForJson>()))
                         );
                 }
                 return _cmdLoadInJsonFile;
@@ -120,7 +121,7 @@ namespace AppHealth.ViewModels
                 if (_cmdLoadInXmlFile == null)
                 {
                     _cmdLoadInXmlFile = new RelayCommand(
-                        param => LoadInFile(param, AutofacConfig.GetContainer.Resolve<WorkForXml>())
+                        async param => await Task.Run(() => LoadInFile(param, AutofacConfig.GetContainer.Resolve<WorkForXml>()))
                         );
                 }
                 return _cmdLoadInXmlFile;

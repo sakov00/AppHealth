@@ -75,12 +75,14 @@ namespace AppHealth.ViewModels
 
         public DrawFuncViewModel()
         {
-            ObservablePoints = new ChartValues<ObservablePoint>();
-            ListResultUser = new ObservableCollection<ResultUser>();
-            ListUserInfo = new List<List<UserInfo>>();
+            _observablePoints = new ChartValues<ObservablePoint>();
+            _listResultUser = new ObservableCollection<ResultUser>();
+            _listUserInfo = new List<List<UserInfo>>();
         }
 
         #region Commands
+
+        #region --- SelectResultUser ---
 
         public ICommand SelectResultUser
         {
@@ -108,29 +110,38 @@ namespace AppHealth.ViewModels
                 var userInfo = ListUserInfo[i].FirstOrDefault(x=> x.User == selectItem.User);
                 if (userInfo != null)
                 {
-                    ObservablePoints.Add(new ObservablePoint { X = i, Y = userInfo.Steps });
+                    if (userInfo.Steps != 0)
+                    {
+                        ObservablePoints.Add(new ObservablePoint { X = i, Y = userInfo.Steps });
+                    }
+                    else
+                    {
+                        ObservablePoints.Add(new ObservablePoint { X = double.NaN, Y = double.NaN });
+                    }
                 }
             }
             Mapper = Mappers.Xy<ObservablePoint>().X(x => x.X).Y(y => y.Y)
                 .Fill(item =>
                 {
-                    if (item.Y == selectItem.BestResult)
+                    if (item.Y == selectItem.BestResult && item.Y != double.NaN)
                         return new SolidColorBrush(Color.FromRgb(0, 255, 34));
-                    else if (item.Y == selectItem.WorstResult)
+                    else if (item.Y == selectItem.WorstResult && item.Y != double.NaN)
                         return new SolidColorBrush(Color.FromRgb(238, 83, 80));
                     else
                         return null;
                 })
                 .Stroke(item =>
                 {
-                    if (item.Y == selectItem.BestResult)
+                    if (item.Y == selectItem.BestResult && item.Y != double.NaN)
                         return new SolidColorBrush(Color.FromRgb(0, 255, 34));
-                    else if (item.Y == selectItem.WorstResult)
+                    else if (item.Y == selectItem.WorstResult && item.Y != double.NaN)
                         return new SolidColorBrush(Color.FromRgb(238, 83, 80));
                     else
                         return null;
                 });
         }
+
+        #endregion --- SelectResultUser ---
 
         #endregion Commands
     }
